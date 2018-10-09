@@ -152,6 +152,104 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-请求与响应" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/10/请求与响应/">请求与响应</a>
+    </h1>
+  
+
+        
+        <a href="/2018/10/10/请求与响应/" class="archive-article-date">
+  	<time datetime="2018-10-09T20:51:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>20多年用网页使用HTTP或HTTPS，除了小学微机老师说过HTTP的故事，我几乎淡忘了这个存在，我们今天就来听听它到底说了什么。</p>
+</blockquote>
+<h1 id="HTTP是什么？"><a href="#HTTP是什么？" class="headerlink" title="HTTP是什么？"></a>HTTP是什么？</h1><p>来自维基百科的一段话</p>
+<blockquote>
+<p>超文本传输协议（英文：HyperText Transfer Protocol，缩写：HTTP）是一种用于分布式、协作式和超媒体信息系统的应用层协议。HTTP是万维网的数据通信的基础。</p>
+</blockquote>
+<p>1990年英国的李爵士创作出成型的HTTP，将他自己想把世界上的每个人都通过简单的方式连接起来的梦想实现。因为有了这个协议，只要有电脑能上网的人都可以通过这个协议来互相沟通访问，不然就得下载一些乱七八糟的配置软件，要有多烦有多烦。</p>
+<h1 id="HTTP的请求和响应"><a href="#HTTP的请求和响应" class="headerlink" title="HTTP的请求和响应"></a>HTTP的请求和响应</h1><p>其实严格来说并不是HTTP的请求和响应，因为他只是一个协议而已，想想看，你自己家的劳动合同能自己写东西？这个请求和响应是浏览器和服务器之间的对话，只不过他们通过HTTP的形式来沟通罢了。那为什么要用HTTP的形式沟通呢？很简单，因为其中一个说英语和汉语，一个会说德语和英语，你说他们在一起说什么语言，而HTTP的地位就相当于英语。<br>现在我们让看看这个文本协议的内容，了解一下浏览器和服务器是怎么沟通的。</p>
+<p>##git来听HTTP</p>
+<h3 id="curl在git中的用法"><a href="#curl在git中的用法" class="headerlink" title="curl在git中的用法"></a>curl在git中的用法</h3><p>curl是git命令的一种，我们在<a href="https://explainshell.com" target="_blank" rel="noopener">命令查询</a>里面查看一下，输入<strong>curl -s -v -H</strong><br><img src="https://upload-images.jianshu.io/upload_images/8661291-5440fbdf3a74bde5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="curl查询.png"><br>这是我稍微网页翻译了一下的结果：</p>
+<ul>
+<li>curl转到网址</li>
+<li>-s安静的意思，把过程中加载和消息忽略掉（这个我们不需要）</li>
+<li>-v把发送和提取显示出来（这个就是我要的）</li>
+<li>-H这是什么鬼（看不懂，不理他）<h3 id="curl展现响应和请求"><a href="#curl展现响应和请求" class="headerlink" title="curl展现响应和请求"></a>curl展现响应和请求</h3>打开<strong>git bash</strong> 我们输入<strong>curl -v – “<a href="https://www.baidu.com&quot;" target="_blank" rel="noopener">https://www.baidu.com&quot;</a></strong>来看看。下面内容很多，我们找到这个<br><img src="https://upload-images.jianshu.io/upload_images/8661291-eaa3cece7e598907.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="curl得到的请求.png"><br>怎么知道这个就是请求？</li>
+</ul>
+<ol>
+<li>格式</li>
+<li>前面是&gt;</li>
+</ol>
+<p>我们说下格式：<br>动作（Git） 路径（/） 协议/版本号（HTTP/1.1）   – 第一部分<br>key1（Host）：value（<a href="http://www.baidu.com）" target="_blank" rel="noopener">www.baidu.com）</a>              – 第二部分<br>key2（Usre）：value（curl/7.60.0）                      – 第二部分<br>……<br>keyn（xxx）：value（xxx）                                    – 第二部分<br>回车                                                                          – 第三部分<br>XXXXXX（这个自己在curl加上去才有，这里就不演示了）–第四部分</p>
+<p><strong>还有响应</strong><img src="https://upload-images.jianshu.io/upload_images/8661291-4f74fc4b1d2292ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="curl响应.png"><br>前面是&lt;<br>格式：<br>协议/版本号（HTTP/1.1） 状态码（200） 状态解释（OK）– 第一部分<br>key1（Accept-Ranges）：value（bytes）              – 第二部分<br>……<br>keyn（xxx）：value（xxx）                                    – 第二部分<br>回车                                                                          – 第三部分<br>XXXXXX（服务器给你的响应数据）–第四部分<br><strong>值得注意的</strong>：content-Length是返回内容长度；content-type是返回数据类型。</p>
+<p>##用chrome来听HTTP<br>这个方式其实很简单。</p>
+<ol>
+<li>我们直接打开浏览器即可</li>
+<li>开个新标签，打开F12，选择Network</li>
+<li>在地址栏中输入<a href="http://www.baidu.com，然后回车" target="_blank" rel="noopener">www.baidu.com，然后回车</a><br><img src="https://upload-images.jianshu.io/upload_images/8661291-187916b74c8989ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="chrome查看HTTP.png"></li>
+<li>点击这个<a href="http://www.baidu.com的GET，再点击" target="_blank" rel="noopener">www.baidu.com的GET，再点击</a> view source<br><img src="https://upload-images.jianshu.io/upload_images/8661291-455033590a5a2247.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="chrome查看HTTP -1.png"></li>
+<li>请求样式展现如图<br><img src="https://upload-images.jianshu.io/upload_images/8661291-b77c616862885193.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="请求样式.png"></li>
+<li>响应样式选择Response Headers 再点击view source如图<br><img src="https://upload-images.jianshu.io/upload_images/8661291-3785a41f0d0d53a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="响应样式.png"></li>
+<li>各位稍微看看便知道，这里并没有响应的第四部分，第四部分要在Response里面看<br><img src="https://upload-images.jianshu.io/upload_images/8661291-67ed3e6883c9cad1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="response.png"></li>
+</ol>
+<blockquote>
+<p>说得并不是很深，并且很多地方可能会有错误，欢迎各位指出。</p>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/10/10/请求与响应/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="css3-clip-pash剪个三角形" class="article article-type-css3  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
