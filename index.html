@@ -152,6 +152,99 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="css3-clip-pash剪个三角形" class="article article-type-css3  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/10/clip-pash剪个三角形/">clip-pash剪个三角形</a>
+    </h1>
+  
+
+        
+        <a href="/2018/10/10/clip-pash剪个三角形/" class="archive-article-date">
+  	<time datetime="2018-10-09T20:48:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>今天这篇博客主要是探究一下CSS3中clip-pash用法，也是我学习前端快一个月的小小足迹吧！</p>
+</blockquote>
+<p><em>本来是想把元素居中这个问题拿来好好说说，不过正好遇到就写写</em></p>
+<p>#怎么遇到这个用法的<br><img src="https://upload-images.jianshu.io/upload_images/8661291-b535688e7eba7d06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="需求.png"><br>就是将图片中的三角形底边和矩形重叠的这部分去掉。<br><img src="https://upload-images.jianshu.io/upload_images/8661291-f21c0f9512dee725.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="需求end.png"><br>我当时能想到的办法就是将我设置的伪元素背景变成白色，但是这样会挡住我在文本框里的文字。<img src="https://upload-images.jianshu.io/upload_images/8661291-da97f7c20cd82729.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="完成办法1.png"><br>这段的CSS如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">.container3::before&#123;</span><br><span class="line">   content:&quot;&quot;;</span><br><span class="line">   display: block;</span><br><span class="line">   width: 25px;</span><br><span class="line">   height: 25px;</span><br><span class="line">   background:white;</span><br><span class="line">   border-top: 2px solid #ccc; </span><br><span class="line">   border-left: 2px solid #ccc;</span><br><span class="line">   border-bottom: 2px solid transparent;</span><br><span class="line">   border-right: 2px solid transparent;</span><br><span class="line">   position: absolute;</span><br><span class="line">   top: -14px;</span><br><span class="line">   left: 15px;</span><br><span class="line">   transform: rotatez(45deg);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这时候是完成了样式，不过如果你想写文字就会被挡住，想必也不是我们想要的。我想了个笨办法，那就是再添加一个标签，这里面写入文字，使标签叠层在文本框之上。所以再写一个<span>在文本框之下，作为其子元素，因为文本框是绝对定位的，所以这个新标签也绝对定位，就解决了文本问题。</span></p>
+<h1 id="有没有更炫酷的办法呢？"><a href="#有没有更炫酷的办法呢？" class="headerlink" title="有没有更炫酷的办法呢？"></a>有没有更炫酷的办法呢？</h1><p>我咨询了下若愚大大，给的建议是<strong>CSS3 clip-pash</strong>。</p>
+<h2 id="什么是clip-pash？"><a href="#什么是clip-pash？" class="headerlink" title="什么是clip-pash？"></a>什么是clip-pash？</h2><blockquote>
+<p>clip-path属性可以创建一个只有元素的部分区域可以显示的剪切区域。区域内的部分显示，区域外的隐藏。剪切区域是被引用内嵌的URL定义的路径或者外部svg的路径，或者作为一个形状例如<a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/circle" target="_blank" rel="noopener">circle()</a>.。clip-path属性代替了现在已经弃用的剪切 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clip" target="_blank" rel="noopener">clip</a>属性。</p>
+</blockquote>
+<p>clip的英语是剪切，pash为路径。根据定义，大致可以知道两件事：</p>
+<ol>
+<li>clip-pash作用的区域是分为可见和不可见两个部分的；</li>
+<li>这个功能和某种路径有关系。</li>
+</ol>
+<h2 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h2><p>根据<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path" target="_blank" rel="noopener">MDN</a>的介绍，还有其他谷歌博客的介绍，大致找到4种写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.clip-me &#123;</span><br><span class="line">clip-path: inset();</span><br><span class="line">clip-path: circle();</span><br><span class="line">clip-path: ellipse();</span><br><span class="line">clip-path: polygon();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中inset是矩形的剪切，circle是圆形的剪切，ellipse是椭圆的剪切，polygon是多边形的剪切。对于我们想要把伪元素这个矩形剪切成三角形，应该使用polygon这个语法。</p>
+<p>在polygon的（）里是我们在平面中定位的点，系统会自动地把这几个点按照顺序连接起来，并剪切。例如我们要剪切的这个例子：<br><img src="https://upload-images.jianshu.io/upload_images/8661291-346672dde878e14e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="坐标图.png"></p>
+<p>红色区就是我们要剪切的这部分，坐标分别是（0,0），（25,0），（0，25）。<strong>因为我们没有设置初始点，所以默认从左上角为（0,0），另外这个和数学坐标系是不同的</strong><br>所以代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.container3::before&#123;</span><br><span class="line">    content:&quot;&quot;;</span><br><span class="line">    display: block;</span><br><span class="line">    width: 25px;</span><br><span class="line">    height: 25px;</span><br><span class="line">    background:white;</span><br><span class="line">    border-top: 2px solid #ccc; </span><br><span class="line">    border-left: 2px solid #ccc;</span><br><span class="line">    border-bottom: 2px solid transparent;</span><br><span class="line">    border-right: 2px solid transparent;</span><br><span class="line">    position: absolute;</span><br><span class="line">    top: -12px;</span><br><span class="line">    left: 15px;</span><br><span class="line">    transform: rotatez(45deg);</span><br><span class="line">    -webkit-clip-path: polygon(0px 0px, 0px 25px, 25px 0px);</span><br><span class="line">    clip-path: polygon(0px 0px, 0px 25px, 25px 0px); </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p><em>-webkit-是因为有些兼容问题，所以有时候必须带上。</em><br>最后out出来也能实现了效果。</p>
+<p>##其他</p>
+<ul>
+<li>在caniuse.com上查找，发现兼容性实在很成问题，ie上全部不支持这个语法，所以在使用场景中需要慎重。</li>
+<li><p>inset是矩形剪切，括号里有四个值，剪切后的上边框离原图上边框的距离，剪切后的右边框离原图右边框的距离，剪切后的下边框离原图下边框的距离，剪切后的左边框离原图左边框的距离。<br><img src="https://upload-images.jianshu.io/upload_images/8661291-4f599493edc299b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="inset.png"></p>
+</li>
+<li><p>circle中默认是从图形中心为初始点，后面（）里面可以写像素，也可以写百分比。像素应该是半径或者直径的长度，百分比不太确定。</p>
+</li>
+<li>ellipse是椭圆形的剪切方式，暂时还有需要研究。</li>
+<li>同时感谢若愚大大给我介绍这个用法，不然我都不知道。</li>
+</ul>
+<p>参考的链接：<br><a href="http://www.zhangxinxu.com/wordpress/?p=4732" target="_blank" rel="noopener">CSS3 clip-path polygon图形构建与动画变换二三事</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path" target="_blank" rel="noopener">MDN</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/10/10/clip-pash剪个三角形/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-初学前端之实现页面简单的边框、表格和三角形" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
